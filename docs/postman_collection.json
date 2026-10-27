@@ -1,0 +1,83 @@
+{
+  "info": {
+    "name": "Freelance Marketplace - Jobs CRUD",
+    "description": "Postman requests for creating, viewing, updating, and deleting jobs.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:8085/api/v1" },
+    { "key": "jobId", "value": "1" },
+    { "key": "hireManagerId", "value": "1" },
+    { "key": "durationId", "value": "1" },
+    { "key": "complexityId", "value": "1" },
+    { "key": "skillId", "value": "1" },
+    { "key": "paymentTypeId", "value": "1" }
+  ],
+  "item": [
+    {
+      "name": "Health check",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/health"
+      }
+    },
+    {
+      "name": "List jobs",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/jobs"
+      }
+    },
+    {
+      "name": "Get job",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/jobs/{{jobId}}"
+      }
+    },
+    {
+      "name": "Create job",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "if (pm.response.code === 201) {",
+              "  pm.collectionVariables.set('jobId', pm.response.json().data.id);",
+              "}"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"hire_manager_id\": {{hireManagerId}},\n  \"duration_id\": {{durationId}},\n  \"complexity_id\": {{complexityId}},\n  \"description\": \"Build a responsive landing page\",\n  \"main_skill_id\": {{skillId}},\n  \"payment_type_id\": {{paymentTypeId}},\n  \"payment_amount\": 500,\n  \"title\": \"Frontend developer needed\"\n}"
+        },
+        "url": "{{baseUrl}}/jobs"
+      }
+    },
+    {
+      "name": "Update job",
+      "request": {
+        "method": "PUT",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"hire_manager_id\": {{hireManagerId}},\n  \"duration_id\": {{durationId}},\n  \"complexity_id\": {{complexityId}},\n  \"description\": \"Updated project scope\",\n  \"main_skill_id\": {{skillId}},\n  \"payment_type_id\": {{paymentTypeId}},\n  \"payment_amount\": 650,\n  \"title\": \"Senior frontend developer needed\"\n}"
+        },
+        "url": "{{baseUrl}}/jobs/{{jobId}}"
+      }
+    },
+    {
+      "name": "Delete job",
+      "request": {
+        "method": "DELETE",
+        "url": "{{baseUrl}}/jobs/{{jobId}}"
+      }
+    }
+  ]
+}
