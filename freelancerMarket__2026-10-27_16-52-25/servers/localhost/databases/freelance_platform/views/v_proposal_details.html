@@ -1,0 +1,179 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+<meta http-equiv="content-type" content="text/html;charset=utf-8" />
+<title>v_proposal_details</title>
+<script src="../../../../../scripts/jquery-1.12.0.min.js" type="text/javascript"></script>
+<script src="../../../../../scripts/bootstrap.min.js" type="text/javascript"></script>
+<script src="../../../../../scripts/clipboard.min.js" type="text/javascript"></script>
+<script src="../../../../../scripts/main.js" type="text/javascript"></script>
+<link rel="stylesheet" href="../../../../../styles/Bootstrap/Default.css" type="text/css">
+<link rel="stylesheet" href="../../../../../styles/main.css" type="text/css">
+<link rel="stylesheet" href="../../../../../styles/svg.css" type="text/css">
+</head>
+<body class="watermark">
+
+  <div class="page-wrap">
+    <div class="header">
+      <div class="row">
+        <div class="col-xs-12">
+          <ol class="breadcrumb">
+            <li class="text-muted">Project</li>
+            <li><a href="../../../../Servers.html" data-mapping-enabled="true">Servers</a></li>
+            <li><a href="../../../localhost.html" data-mapping-enabled="true">localhost</a></li>
+            <li><a href="../../Databases.html" data-mapping-enabled="true">Databases</a></li>
+            <li><a href="../freelance_platform.html" data-mapping-enabled="true">freelance_platform</a></li>
+            <li><a href="./Views.html" data-mapping-enabled="true">Views</a></li>
+            <li class="active">v_proposal_details</li>
+          </ol>
+        </div>
+      </div>
+      <div class="row">
+        <div class="title col-xs-12">
+          <div><svg viewBox="0 0 16 16" class="inline-middle image-large light" data-toggle="tooltip" title="v_proposal_details" data-original-title="v_proposal_details"><path d="M2 0v3.001H0V16h14.001v-2.999H16V0H2z" class="vs_output" /><path d="M11 9H5V8h6v1zm1 5H2V6h10v8zM1 15h12V4H1v11zm13-4H4V3h10v8zM3 12h12V1H3v11z" class="vs_background" /><path d="M11 8H5v1h6V8zm1 3H4V6h8v5zM4 3v1h9v7h1V3H4zM2 6h1v6h9v2H2V6z" class="vs_foreground" /></svg><h1 class="inline-middle">v_proposal_details</h1>
+            <div class="dropdown actions-btn-wrap">
+              <button type="button" class="btn btn-default actions-btn" data-toggle="dropdown"><span class="icon-actions icon-small actions-btn-span"></span></button>
+              <ul class="dropdown-menu dropdown-menu-right">
+                <li><a id="CollapseAll" href="#">Collapse All</a></li>
+                <li><a id="ExpandAll" href="#">Expand All</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="content">
+
+      <div id="Columns" class="panel panel-default">
+        <div class="panel-heading">
+          <span class="icon-bottom inline-middle expanded icon-small"></span>
+          <span class="icon-right inline-middle collapsed icon-small" style="display:none"></span>
+          <h2 class="inline-middle">Columns</h2>
+          <span class="badge inline-middle">6</span>
+        </div>
+        <div class="panel-collapse collapse in">
+          <div class="panel-body">
+            <table class="table table-hover table-bordered table-100">
+              <tbody>
+                <tr>
+                  <th>Name</th>
+                  <th>Data Type</th>
+                  <th>Length</th>
+                  <th>Unsigned</th>
+                  <th>Zerofill</th>
+                  <th>Binary</th>
+                  <th>Not Null</th>
+                </tr>
+                <tr>
+                  <td>proposal_id</td>
+                  <td>BIGINT</td>
+                  <td></td>
+                  <td><p class="value-false">False</p></td>
+                  <td><p class="value-false">False</p></td>
+                  <td><p class="value-false">False</p></td>
+                  <td><p class="value-true">True</p></td>
+                </tr>
+                <tr>
+                  <td>job_title</td>
+                  <td>VARCHAR</td>
+                  <td>255</td>
+                  <td><p class="value-false">False</p></td>
+                  <td><p class="value-false">False</p></td>
+                  <td><p class="value-false">False</p></td>
+                  <td><p class="value-true">True</p></td>
+                </tr>
+                <tr>
+                  <td>freelancer_name</td>
+                  <td>VARCHAR</td>
+                  <td>201</td>
+                  <td><p class="value-false">False</p></td>
+                  <td><p class="value-false">False</p></td>
+                  <td><p class="value-false">False</p></td>
+                  <td><p class="value-true">True</p></td>
+                </tr>
+                <tr>
+                  <td>payment_amount</td>
+                  <td>DECIMAL</td>
+                  <td></td>
+                  <td><p class="value-false">False</p></td>
+                  <td><p class="value-false">False</p></td>
+                  <td><p class="value-false">False</p></td>
+                  <td><p class="value-true">True</p></td>
+                </tr>
+                <tr>
+                  <td>proposal_status</td>
+                  <td>VARCHAR</td>
+                  <td>255</td>
+                  <td><p class="value-false">False</p></td>
+                  <td><p class="value-false">False</p></td>
+                  <td><p class="value-false">False</p></td>
+                  <td><p class="value-true">True</p></td>
+                </tr>
+                <tr>
+                  <td>proposal_time</td>
+                  <td>TIMESTAMP</td>
+                  <td></td>
+                  <td><p class="value-false">False</p></td>
+                  <td><p class="value-false">False</p></td>
+                  <td><p class="value-false">False</p></td>
+                  <td><p class="value-false">False</p></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div id="SqlScript" class="panel panel-default">
+        <div class="panel-heading">
+          <span class="icon-bottom inline-middle expanded icon-small"></span>
+          <span class="icon-right inline-middle collapsed icon-small" style="display:none"></span>
+          <h2 class="inline-middle">SQL Script</h2>
+        </div>
+        <div class="panel-collapse collapse in">
+          <div class="panel-body">
+            <div class="zero-clipboard">
+              <span class="btn-clipboard btn-default panel-default" data-clipboard-action="copy" data-clipboard-target=".sqlscript" data-toggle="tooltip" title="Copy to clipboard">Copy</span></div><div class="sqlscript  panel-default" style="word-wrap: break-word; padding-right:60px">
+              <font color="#005098">CREATE</font><br /><font color="#005098">DEFINER</font>&nbsp;<font color="#808080">=</font>&nbsp;<font color="#9d240c">&#39;root&#39;</font><br /><font color="#005098">VIEW</font>&nbsp;<font color="#000000">v_proposal_details</font><br /><font color="#005098">AS</font><br /><font color="#005098">SELECT</font><br />&nbsp;&nbsp;<font color="#000000">`p`</font><font color="#808080">.</font><font color="#000000">`id`</font>&nbsp;<font color="#005098">AS</font>&nbsp;<font color="#000000">`proposal_id`</font><font color="#808080">,</font><br />&nbsp;&nbsp;<font color="#000000">`j`</font><font color="#808080">.</font><font color="#000000">`title`</font>&nbsp;<font color="#005098">AS</font>&nbsp;<font color="#000000">`job_title`</font><font color="#808080">,</font><br />&nbsp;&nbsp;<font color="#be00be">CONCAT</font><font color="#808080">(</font><font color="#000000">`u`</font><font color="#808080">.</font><font color="#000000">`first_name`</font><font color="#808080">,</font>&nbsp;<font color="#9d240c">&#39;&nbsp;&#39;</font><font color="#808080">,</font>&nbsp;<font color="#000000">`u`</font><font color="#808080">.</font><font color="#000000">`last_name`</font><font color="#808080">)</font>&nbsp;<font color="#005098">AS</font>&nbsp;<font color="#000000">`freelancer_name`</font><font color="#808080">,</font><br />&nbsp;&nbsp;<font color="#000000">`p`</font><font color="#808080">.</font><font color="#000000">`payment_amount`</font>&nbsp;<font color="#005098">AS</font>&nbsp;<font color="#000000">`payment_amount`</font><font color="#808080">,</font><br />&nbsp;&nbsp;<font color="#000000">`sc`</font><font color="#808080">.</font><font color="#000000">`status_name`</font>&nbsp;<font color="#005098">AS</font>&nbsp;<font color="#000000">`proposal_status`</font><font color="#808080">,</font><br />&nbsp;&nbsp;<font color="#000000">`p`</font><font color="#808080">.</font><font color="#000000">`proposal_time`</font>&nbsp;<font color="#005098">AS</font>&nbsp;<font color="#000000">`proposal_time`</font><br /><font color="#005098">FROM</font>&nbsp;<font color="#808080">(</font><font color="#808080">(</font><font color="#808080">(</font><font color="#808080">(</font><font color="#000000">`proposal`</font>&nbsp;<font color="#000000">`p`</font><br />&nbsp;&nbsp;<font color="#005098">JOIN</font>&nbsp;<font color="#000000">`job`</font>&nbsp;<font color="#000000">`j`</font><br />&nbsp;&nbsp;&nbsp;&nbsp;<font color="#005098">ON</font>&nbsp;<font color="#808080">(</font><font color="#000000">`p`</font><font color="#808080">.</font><font color="#000000">`job_id`</font>&nbsp;<font color="#808080">=</font>&nbsp;<font color="#000000">`j`</font><font color="#808080">.</font><font color="#000000">`id`</font><font color="#808080">)</font><font color="#808080">)</font><br />&nbsp;&nbsp;<font color="#005098">JOIN</font>&nbsp;<font color="#000000">`freelancer`</font>&nbsp;<font color="#000000">`f`</font><br />&nbsp;&nbsp;&nbsp;&nbsp;<font color="#005098">ON</font>&nbsp;<font color="#808080">(</font><font color="#000000">`p`</font><font color="#808080">.</font><font color="#000000">`freelancer_id`</font>&nbsp;<font color="#808080">=</font>&nbsp;<font color="#000000">`f`</font><font color="#808080">.</font><font color="#000000">`id`</font><font color="#808080">)</font><font color="#808080">)</font><br />&nbsp;&nbsp;<font color="#005098">JOIN</font>&nbsp;<font color="#000000">`user_account`</font>&nbsp;<font color="#000000">`u`</font><br />&nbsp;&nbsp;&nbsp;&nbsp;<font color="#005098">ON</font>&nbsp;<font color="#808080">(</font><font color="#000000">`f`</font><font color="#808080">.</font><font color="#000000">`user_account_id`</font>&nbsp;<font color="#808080">=</font>&nbsp;<font color="#000000">`u`</font><font color="#808080">.</font><font color="#000000">`id`</font><font color="#808080">)</font><font color="#808080">)</font><br />&nbsp;&nbsp;<font color="#005098">JOIN</font>&nbsp;<font color="#000000">`status_catalog`</font>&nbsp;<font color="#000000">`sc`</font><br />&nbsp;&nbsp;&nbsp;&nbsp;<font color="#005098">ON</font>&nbsp;<font color="#808080">(</font><font color="#000000">`p`</font><font color="#808080">.</font><font color="#000000">`current_proposal_status_id`</font>&nbsp;<font color="#808080">=</font>&nbsp;<font color="#000000">`sc`</font><font color="#808080">.</font><font color="#000000">`id`</font><font color="#808080">)</font><font color="#808080">)</font><font color="#808080">;</font></div>
+          </div>
+        </div>
+      </div>
+      <div id="DependsOn" class="panel panel-default">
+        <div class="panel-heading">
+          <span class="icon-bottom inline-middle expanded icon-small"></span>
+          <span class="icon-right inline-middle collapsed icon-small" style="display:none"></span>
+          <h2 class="inline-middle">Depends On</h2>
+          <span class="badge inline-middle">5</span>
+        </div>
+        <div class="panel-collapse collapse in">
+          <div class="panel-body">
+            <ul class="items-list">
+              <li><a href="../tables/freelancer.html" data-mapping-enabled="true"><svg viewBox="0 0 16 16" class="image-small light" data-toggle="tooltip" title="Table" data-original-title="Table"><path d="M16 15.5H0V.567h16V15.5z" class="vs_output" /><path d="M13.867 6.967h-3.2V4.833h3.2v2.134zm0 3.2h-3.2V8.033h3.2v2.134zm0 3.2h-3.2v-2.134h3.2v2.134zM9.6 6.967H6.4V4.833h3.2v2.134zm0 3.2H6.4V8.033h3.2v2.134zm0 3.2H6.4v-2.134h3.2v2.134zm-4.267-6.4h-3.2V4.833h3.2v2.134zm0 3.2h-3.2V8.033h3.2v2.134zm0 3.2h-3.2v-2.134h3.2v2.134zm-4.266 1.066h13.866v-12.8H1.067v12.8z" class="vs_background" /><path d="M5.333 11.233h-3.2v2.134h3.2v-2.134zm4.267 0H6.4v2.134h3.2v-2.134zm4.267 0h-3.2v2.134h3.2v-2.134zm-8.534-3.2h-3.2v2.134h3.2V8.033zm0-3.2h-3.2v2.134h3.2V4.833zm4.267 3.2H6.4v2.134h3.2V8.033zm0-3.2H6.4v2.134h3.2V4.833zm4.267 3.2h-3.2v2.134h3.2V8.033zm0-1.066h-3.2V4.833h3.2v2.134z" class="vs_foreground" /></svg><span>freelancer</span></a></li>
+              <li><a href="../tables/job.html" data-mapping-enabled="true"><svg viewBox="0 0 16 16" class="image-small light" data-toggle="tooltip" title="Table" data-original-title="Table"><path d="M16 15.5H0V.567h16V15.5z" class="vs_output" /><path d="M13.867 6.967h-3.2V4.833h3.2v2.134zm0 3.2h-3.2V8.033h3.2v2.134zm0 3.2h-3.2v-2.134h3.2v2.134zM9.6 6.967H6.4V4.833h3.2v2.134zm0 3.2H6.4V8.033h3.2v2.134zm0 3.2H6.4v-2.134h3.2v2.134zm-4.267-6.4h-3.2V4.833h3.2v2.134zm0 3.2h-3.2V8.033h3.2v2.134zm0 3.2h-3.2v-2.134h3.2v2.134zm-4.266 1.066h13.866v-12.8H1.067v12.8z" class="vs_background" /><path d="M5.333 11.233h-3.2v2.134h3.2v-2.134zm4.267 0H6.4v2.134h3.2v-2.134zm4.267 0h-3.2v2.134h3.2v-2.134zm-8.534-3.2h-3.2v2.134h3.2V8.033zm0-3.2h-3.2v2.134h3.2V4.833zm4.267 3.2H6.4v2.134h3.2V8.033zm0-3.2H6.4v2.134h3.2V4.833zm4.267 3.2h-3.2v2.134h3.2V8.033zm0-1.066h-3.2V4.833h3.2v2.134z" class="vs_foreground" /></svg><span>job</span></a></li>
+              <li><a href="../tables/proposal.html" data-mapping-enabled="true"><svg viewBox="0 0 16 16" class="image-small light" data-toggle="tooltip" title="Table" data-original-title="Table"><path d="M16 15.5H0V.567h16V15.5z" class="vs_output" /><path d="M13.867 6.967h-3.2V4.833h3.2v2.134zm0 3.2h-3.2V8.033h3.2v2.134zm0 3.2h-3.2v-2.134h3.2v2.134zM9.6 6.967H6.4V4.833h3.2v2.134zm0 3.2H6.4V8.033h3.2v2.134zm0 3.2H6.4v-2.134h3.2v2.134zm-4.267-6.4h-3.2V4.833h3.2v2.134zm0 3.2h-3.2V8.033h3.2v2.134zm0 3.2h-3.2v-2.134h3.2v2.134zm-4.266 1.066h13.866v-12.8H1.067v12.8z" class="vs_background" /><path d="M5.333 11.233h-3.2v2.134h3.2v-2.134zm4.267 0H6.4v2.134h3.2v-2.134zm4.267 0h-3.2v2.134h3.2v-2.134zm-8.534-3.2h-3.2v2.134h3.2V8.033zm0-3.2h-3.2v2.134h3.2V4.833zm4.267 3.2H6.4v2.134h3.2V8.033zm0-3.2H6.4v2.134h3.2V4.833zm4.267 3.2h-3.2v2.134h3.2V8.033zm0-1.066h-3.2V4.833h3.2v2.134z" class="vs_foreground" /></svg><span>proposal</span></a></li>
+              <li><a href="../tables/status_catalog.html" data-mapping-enabled="true"><svg viewBox="0 0 16 16" class="image-small light" data-toggle="tooltip" title="Table" data-original-title="Table"><path d="M16 15.5H0V.567h16V15.5z" class="vs_output" /><path d="M13.867 6.967h-3.2V4.833h3.2v2.134zm0 3.2h-3.2V8.033h3.2v2.134zm0 3.2h-3.2v-2.134h3.2v2.134zM9.6 6.967H6.4V4.833h3.2v2.134zm0 3.2H6.4V8.033h3.2v2.134zm0 3.2H6.4v-2.134h3.2v2.134zm-4.267-6.4h-3.2V4.833h3.2v2.134zm0 3.2h-3.2V8.033h3.2v2.134zm0 3.2h-3.2v-2.134h3.2v2.134zm-4.266 1.066h13.866v-12.8H1.067v12.8z" class="vs_background" /><path d="M5.333 11.233h-3.2v2.134h3.2v-2.134zm4.267 0H6.4v2.134h3.2v-2.134zm4.267 0h-3.2v2.134h3.2v-2.134zm-8.534-3.2h-3.2v2.134h3.2V8.033zm0-3.2h-3.2v2.134h3.2V4.833zm4.267 3.2H6.4v2.134h3.2V8.033zm0-3.2H6.4v2.134h3.2V4.833zm4.267 3.2h-3.2v2.134h3.2V8.033zm0-1.066h-3.2V4.833h3.2v2.134z" class="vs_foreground" /></svg><span>status_catalog</span></a></li>
+              <li><a href="../tables/user_account.html" data-mapping-enabled="true"><svg viewBox="0 0 16 16" class="image-small light" data-toggle="tooltip" title="Table" data-original-title="Table"><path d="M16 15.5H0V.567h16V15.5z" class="vs_output" /><path d="M13.867 6.967h-3.2V4.833h3.2v2.134zm0 3.2h-3.2V8.033h3.2v2.134zm0 3.2h-3.2v-2.134h3.2v2.134zM9.6 6.967H6.4V4.833h3.2v2.134zm0 3.2H6.4V8.033h3.2v2.134zm0 3.2H6.4v-2.134h3.2v2.134zm-4.267-6.4h-3.2V4.833h3.2v2.134zm0 3.2h-3.2V8.033h3.2v2.134zm0 3.2h-3.2v-2.134h3.2v2.134zm-4.266 1.066h13.866v-12.8H1.067v12.8z" class="vs_background" /><path d="M5.333 11.233h-3.2v2.134h3.2v-2.134zm4.267 0H6.4v2.134h3.2v-2.134zm4.267 0h-3.2v2.134h3.2v-2.134zm-8.534-3.2h-3.2v2.134h3.2V8.033zm0-3.2h-3.2v2.134h3.2V4.833zm4.267 3.2H6.4v2.134h3.2V8.033zm0-3.2H6.4v2.134h3.2V4.833zm4.267 3.2h-3.2v2.134h3.2V8.033zm0-1.066h-3.2V4.833h3.2v2.134z" class="vs_foreground" /></svg><span>user_account</span></a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div id="UsedBy" class="panel panel-default">
+        <div class="panel-heading">
+          <span class="icon-bottom inline-middle expanded icon-small"></span>
+          <span class="icon-right inline-middle collapsed icon-small" style="display:none"></span>
+          <h2 class="inline-middle">Used By</h2>
+        </div>
+        <div class="panel-collapse collapse in">
+          <div class="panel-body">
+            <span class="text-muted">No items found</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="footer">
+    <div class="col-xs-4">Author:&nbsp;</div>
+    <div class="col-xs-4 align-center">Copyright &#169; All Rights Reserved</div>
+    <div class="col-xs-4 align-right">Created:&nbsp;27/10/2026</div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,19 @@
+.sqlscript {
+  overflow-x: visible;
+  white-space: normal;
+}
+
+/* Remove fixed header */
+.header {
+  position: relative;
+}
+.content {
+  padding-top: 0px;
+}
+
+.page-wrap {
+  min-height: 100%;
+  height: auto !important;
+  margin: 0px;
+  padding: 0px;
+}
