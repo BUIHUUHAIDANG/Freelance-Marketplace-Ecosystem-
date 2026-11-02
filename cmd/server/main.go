@@ -6,7 +6,7 @@ import (
 	"log"
 	"os"
 
-	"github.com/BUIHUUHAIDANG/freelance_market/routes"
+	"github.com/BUIHUUHAIDANG/freelance_market/internal/routes"
 	"github.com/gin-gonic/gin"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/joho/godotenv"
