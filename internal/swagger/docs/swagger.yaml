@@ -1,0 +1,137 @@
+basePath: /
+definitions:
+  github_com_BUIHUUHAIDANG_freelance_market_internal_model.Fail:
+    properties:
+      error:
+        type: string
+    type: object
+  github_com_BUIHUUHAIDANG_freelance_market_internal_model.SignInInputUserAccount:
+    properties:
+      email:
+        type: string
+      password_hash:
+        type: string
+    required:
+    - email
+    - password_hash
+    type: object
+  github_com_BUIHUUHAIDANG_freelance_market_internal_model.SignUpInputUserAccount:
+    properties:
+      email:
+        type: string
+      first_name:
+        type: string
+      last_name:
+        type: string
+      password_hash:
+        type: string
+    required:
+    - email
+    - first_name
+    - last_name
+    - password_hash
+    type: object
+  github_com_BUIHUUHAIDANG_freelance_market_internal_model.UserRespond:
+    properties:
+      email:
+        type: string
+      first_name:
+        type: string
+      id:
+        type: integer
+      last_name:
+        type: string
+    type: object
+info:
+  contact: {}
+  description: API for the Freelance Marketplace project.
+  title: Freelance Marketplace API
+  version: "1.0"
+paths:
+  /auth/login:
+    post:
+      consumes:
+      - application/json
+      description: Verifies the supplied email and plain-text password.
+      parameters:
+      - description: Login credentials
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_BUIHUUHAIDANG_freelance_market_internal_model.SignInInputUserAccount'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_BUIHUUHAIDANG_freelance_market_internal_model.UserRespond'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_BUIHUUHAIDANG_freelance_market_internal_model.Fail'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_BUIHUUHAIDANG_freelance_market_internal_model.Fail'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/github_com_BUIHUUHAIDANG_freelance_market_internal_model.Fail'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_BUIHUUHAIDANG_freelance_market_internal_model.Fail'
+      summary: Sign in to a user account
+      tags:
+      - auth
+  /auth/register:
+    post:
+      consumes:
+      - application/json
+      description: Creates an account and hashes the supplied plain-text password.
+      parameters:
+      - description: Account details
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_BUIHUUHAIDANG_freelance_market_internal_model.SignUpInputUserAccount'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/github_com_BUIHUUHAIDANG_freelance_market_internal_model.UserRespond'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_BUIHUUHAIDANG_freelance_market_internal_model.Fail'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/github_com_BUIHUUHAIDANG_freelance_market_internal_model.Fail'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_BUIHUUHAIDANG_freelance_market_internal_model.Fail'
+      summary: Register a user account
+      tags:
+      - auth
+  /health:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Check API status
+      tags:
+      - health
+swagger: "2.0"

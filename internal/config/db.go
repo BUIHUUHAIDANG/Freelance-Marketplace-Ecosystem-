@@ -4,12 +4,13 @@ import (
 	"database/sql"
 	"log"
 	"os"
+
 	"github.com/joho/godotenv"
 )
 
 var DB *sql.DB
 
-func ConnectWithDataBase(){
+func ConnectWithDataBase() {
 	err := godotenv.Load(".env")
 	if err != nil {
 		log.Fatal("Can not load file .env")
@@ -22,9 +23,9 @@ func ConnectWithDataBase(){
 	if err != nil {
 		log.Fatal(err)
 	}
-	defer db.Close()
 
 	if err := db.Ping(); err != nil {
+		db.Close()
 		log.Fatal(err)
 	}
 	DB = db
