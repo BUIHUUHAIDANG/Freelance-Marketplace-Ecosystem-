@@ -36,3 +36,12 @@ type UserAccount struct {
 type Fail struct{
 	Error string `json:"error"`
 }
+
+
+type UserAccountProfileRespond struct{
+	Email     string `json:"email"`
+	FirstName string `json:"first_name"`
+	LastName  string `json:"last_name"`
+	HasFreelancerProfile bool `json:"has_freelancer_profile"`
+	HasHirerProfile bool `json:"has_hirer_profile"`
+}

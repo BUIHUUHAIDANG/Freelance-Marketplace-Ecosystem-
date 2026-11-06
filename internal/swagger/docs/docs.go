@@ -146,6 +146,47 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "/user/{id}": {
+            "get": {
+                "description": "Returns basic account information and whether freelancer or hirer profiles exist.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "user account"
+                ],
+                "summary": "Get a user account profile",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "User account ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_BUIHUUHAIDANG_freelance_market_internal_model.UserAccountProfileRespond"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_BUIHUUHAIDANG_freelance_market_internal_model.Fail"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_BUIHUUHAIDANG_freelance_market_internal_model.Fail"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -191,6 +232,26 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "password_hash": {
+                    "type": "string"
+                }
+            }
+        },
+        "github_com_BUIHUUHAIDANG_freelance_market_internal_model.UserAccountProfileRespond": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "first_name": {
+                    "type": "string"
+                },
+                "has_freelancer_profile": {
+                    "type": "boolean"
+                },
+                "has_hirer_profile": {
+                    "type": "boolean"
+                },
+                "last_name": {
                     "type": "string"
                 }
             }

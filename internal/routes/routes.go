@@ -23,5 +23,5 @@ func RegisterRoutes(router *gin.Engine, db *sql.DB) {
 	router.POST("/auth/login", controller.LoginHandler(db))
 	router.POST("/auth/register", controller.RegisterHandler(db))
 	swagger.RegisterRoutes(router)
-	UserRoutes(router)
+	UserRoutes(router,db)
 }

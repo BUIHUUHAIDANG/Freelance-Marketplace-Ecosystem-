@@ -22,6 +22,7 @@ func TestSwaggerDocumentationRoutes(t *testing.T) {
 		"GET /health",
 		"POST /auth/login",
 		"POST /auth/register",
+		"GET /user/:id",
 		"GET /swagger/*any",
 	} {
 		if !registeredRoutes[route] {
@@ -37,7 +38,13 @@ func TestSwaggerDocumentationRoutes(t *testing.T) {
 			t.Errorf("GET %s returned %d", path, response.Code)
 		}
 		if path == "/swagger/doc.json" {
-			for _, expected := range []string{"/health", "/auth/login", "/auth/register"} {
+			for _, expected := range []string{
+				"/health",
+				"/auth/login",
+				"/auth/register",
+				"/user/{id}",
+				"UserAccountProfileRespond",
+			} {
 				if !strings.Contains(response.Body.String(), expected) {
 					t.Errorf("generated Swagger document does not contain %q", expected)
 				}

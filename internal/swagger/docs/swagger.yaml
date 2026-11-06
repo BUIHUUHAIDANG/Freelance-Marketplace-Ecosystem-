@@ -31,6 +31,19 @@ definitions:
     - last_name
     - password_hash
     type: object
+  github_com_BUIHUUHAIDANG_freelance_market_internal_model.UserAccountProfileRespond:
+    properties:
+      email:
+        type: string
+      first_name:
+        type: string
+      has_freelancer_profile:
+        type: boolean
+      has_hirer_profile:
+        type: boolean
+      last_name:
+        type: string
+    type: object
   github_com_BUIHUUHAIDANG_freelance_market_internal_model.UserRespond:
     properties:
       email:
@@ -134,4 +147,32 @@ paths:
       summary: Check API status
       tags:
       - health
+  /user/{id}:
+    get:
+      description: Returns basic account information and whether freelancer or hirer
+        profiles exist.
+      parameters:
+      - description: User account ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_BUIHUUHAIDANG_freelance_market_internal_model.UserAccountProfileRespond'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/github_com_BUIHUUHAIDANG_freelance_market_internal_model.Fail'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_BUIHUUHAIDANG_freelance_market_internal_model.Fail'
+      summary: Get a user account profile
+      tags:
+      - user account
 swagger: "2.0"
