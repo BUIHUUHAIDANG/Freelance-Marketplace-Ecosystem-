@@ -24,4 +24,5 @@ func RegisterRoutes(router *gin.Engine, db *sql.DB) {
 	router.POST("/auth/register", controller.RegisterHandler(db))
 	swagger.RegisterRoutes(router)
 	UserRoutes(router, db)
+	JobRoute(router,db)
 }

@@ -66,3 +66,20 @@ type HirerProfileRespond struct {
 	CompanyName      string  `json:"company_name"`
 	CompanyLocation  *string `json:"company_location"`
 }
+
+type Job struct {
+	ID int64 `json:"id"` 
+	HireManagerName string `json:"hire_manager_name"`
+	Duration string `json:"duration"`
+	Complexity string `json:"complexity"`
+	Description *string `json:"description"`
+	MainSkill string `json:"main_skill"`
+	PaymentType string `json:"payment_type"`
+	PaymentAmount *float64 `json:"payment_amount"`
+	Title string `json:"title"`
+	RequireSkill []OtherSkill `json:"required_skill"`
+}
+
+type OtherSkill struct{
+	SkillName string `json:"other_skill"`
+}
