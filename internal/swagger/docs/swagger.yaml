@@ -5,6 +5,36 @@ definitions:
       error:
         type: string
     type: object
+  github_com_BUIHUUHAIDANG_freelance_market_internal_model.FreelancerProfileRespond:
+    properties:
+      id:
+        type: integer
+      location:
+        type: string
+      overview:
+        type: string
+      registration_date:
+        type: string
+      user_account_id:
+        type: integer
+    type: object
+  github_com_BUIHUUHAIDANG_freelance_market_internal_model.HirerProfileRespond:
+    properties:
+      company_id:
+        type: integer
+      company_location:
+        type: string
+      company_name:
+        type: string
+      id:
+        type: integer
+      location:
+        type: string
+      registration_date:
+        type: string
+      user_account_id:
+        type: integer
+    type: object
   github_com_BUIHUUHAIDANG_freelance_market_internal_model.SignInInputUserAccount:
     properties:
       email:
@@ -30,6 +60,13 @@ definitions:
     - first_name
     - last_name
     - password_hash
+    type: object
+  github_com_BUIHUUHAIDANG_freelance_market_internal_model.UpdateUserProfileRequest:
+    properties:
+      first_name:
+        type: string
+      last_name:
+        type: string
     type: object
   github_com_BUIHUUHAIDANG_freelance_market_internal_model.UserAccountProfileRespond:
     properties:
@@ -148,6 +185,37 @@ paths:
       tags:
       - health
   /user/{id}:
+    delete:
+      parameters:
+      - description: User account ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_BUIHUUHAIDANG_freelance_market_internal_model.Fail'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/github_com_BUIHUUHAIDANG_freelance_market_internal_model.Fail'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_BUIHUUHAIDANG_freelance_market_internal_model.Fail'
+      summary: Delete a user account
+      tags:
+      - user account
     get:
       description: Returns basic account information and whether freelancer or hirer
         profiles exist.
@@ -164,6 +232,10 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/github_com_BUIHUUHAIDANG_freelance_market_internal_model.UserAccountProfileRespond'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_BUIHUUHAIDANG_freelance_market_internal_model.Fail'
         "404":
           description: Not Found
           schema:
@@ -173,6 +245,105 @@ paths:
           schema:
             $ref: '#/definitions/github_com_BUIHUUHAIDANG_freelance_market_internal_model.Fail'
       summary: Get a user account profile
+      tags:
+      - user account
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: User account ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Profile fields
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_BUIHUUHAIDANG_freelance_market_internal_model.UpdateUserProfileRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_BUIHUUHAIDANG_freelance_market_internal_model.Fail'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/github_com_BUIHUUHAIDANG_freelance_market_internal_model.Fail'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_BUIHUUHAIDANG_freelance_market_internal_model.Fail'
+      summary: Update a user account profile
+      tags:
+      - user account
+  /user/{id}/freelancer:
+    get:
+      parameters:
+      - description: User account ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_BUIHUUHAIDANG_freelance_market_internal_model.FreelancerProfileRespond'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_BUIHUUHAIDANG_freelance_market_internal_model.Fail'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/github_com_BUIHUUHAIDANG_freelance_market_internal_model.Fail'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_BUIHUUHAIDANG_freelance_market_internal_model.Fail'
+      summary: Get a user's freelancer profile
+      tags:
+      - user account
+  /user/{id}/hirer:
+    get:
+      parameters:
+      - description: User account ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_BUIHUUHAIDANG_freelance_market_internal_model.HirerProfileRespond'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_BUIHUUHAIDANG_freelance_market_internal_model.Fail'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/github_com_BUIHUUHAIDANG_freelance_market_internal_model.Fail'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_BUIHUUHAIDANG_freelance_market_internal_model.Fail'
+      summary: Get a user's hirer profile
       tags:
       - user account
 swagger: "2.0"

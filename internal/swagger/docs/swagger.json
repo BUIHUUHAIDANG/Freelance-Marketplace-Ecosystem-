@@ -166,6 +166,210 @@
                             "$ref": "#/definitions/github_com_BUIHUUHAIDANG_freelance_market_internal_model.UserAccountProfileRespond"
                         }
                     },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_BUIHUUHAIDANG_freelance_market_internal_model.Fail"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_BUIHUUHAIDANG_freelance_market_internal_model.Fail"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_BUIHUUHAIDANG_freelance_market_internal_model.Fail"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "user account"
+                ],
+                "summary": "Update a user account profile",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "User account ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Profile fields",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/github_com_BUIHUUHAIDANG_freelance_market_internal_model.UpdateUserProfileRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_BUIHUUHAIDANG_freelance_market_internal_model.Fail"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_BUIHUUHAIDANG_freelance_market_internal_model.Fail"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_BUIHUUHAIDANG_freelance_market_internal_model.Fail"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "user account"
+                ],
+                "summary": "Delete a user account",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "User account ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_BUIHUUHAIDANG_freelance_market_internal_model.Fail"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_BUIHUUHAIDANG_freelance_market_internal_model.Fail"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_BUIHUUHAIDANG_freelance_market_internal_model.Fail"
+                        }
+                    }
+                }
+            }
+        },
+        "/user/{id}/freelancer": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "user account"
+                ],
+                "summary": "Get a user's freelancer profile",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "User account ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_BUIHUUHAIDANG_freelance_market_internal_model.FreelancerProfileRespond"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_BUIHUUHAIDANG_freelance_market_internal_model.Fail"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_BUIHUUHAIDANG_freelance_market_internal_model.Fail"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_BUIHUUHAIDANG_freelance_market_internal_model.Fail"
+                        }
+                    }
+                }
+            }
+        },
+        "/user/{id}/hirer": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "user account"
+                ],
+                "summary": "Get a user's hirer profile",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "User account ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_BUIHUUHAIDANG_freelance_market_internal_model.HirerProfileRespond"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_BUIHUUHAIDANG_freelance_market_internal_model.Fail"
+                        }
+                    },
                     "404": {
                         "description": "Not Found",
                         "schema": {
@@ -188,6 +392,52 @@
             "properties": {
                 "error": {
                     "type": "string"
+                }
+            }
+        },
+        "github_com_BUIHUUHAIDANG_freelance_market_internal_model.FreelancerProfileRespond": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "location": {
+                    "type": "string"
+                },
+                "overview": {
+                    "type": "string"
+                },
+                "registration_date": {
+                    "type": "string"
+                },
+                "user_account_id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "github_com_BUIHUUHAIDANG_freelance_market_internal_model.HirerProfileRespond": {
+            "type": "object",
+            "properties": {
+                "company_id": {
+                    "type": "integer"
+                },
+                "company_location": {
+                    "type": "string"
+                },
+                "company_name": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "location": {
+                    "type": "string"
+                },
+                "registration_date": {
+                    "type": "string"
+                },
+                "user_account_id": {
+                    "type": "integer"
                 }
             }
         },
@@ -225,6 +475,17 @@
                     "type": "string"
                 },
                 "password_hash": {
+                    "type": "string"
+                }
+            }
+        },
+        "github_com_BUIHUUHAIDANG_freelance_market_internal_model.UpdateUserProfileRequest": {
+            "type": "object",
+            "properties": {
+                "first_name": {
+                    "type": "string"
+                },
+                "last_name": {
                     "type": "string"
                 }
             }

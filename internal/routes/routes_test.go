@@ -23,6 +23,10 @@ func TestSwaggerDocumentationRoutes(t *testing.T) {
 		"POST /auth/login",
 		"POST /auth/register",
 		"GET /user/:id",
+		"PUT /user/:id",
+		"DELETE /user/:id",
+		"GET /user/:id/freelancer",
+		"GET /user/:id/hirer",
 		"GET /swagger/*any",
 	} {
 		if !registeredRoutes[route] {
@@ -43,6 +47,8 @@ func TestSwaggerDocumentationRoutes(t *testing.T) {
 				"/auth/login",
 				"/auth/register",
 				"/user/{id}",
+				"/user/{id}/freelancer",
+				"/user/{id}/hirer",
 				"UserAccountProfileRespond",
 			} {
 				if !strings.Contains(response.Body.String(), expected) {
