@@ -43,7 +43,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/github_com_BUIHUUHAIDANG_freelance_market_internal_model.UserRespond"
+                            "$ref": "#/definitions/github_com_BUIHUUHAIDANG_freelance_market_internal_model.SignUpRespond"
                         }
                     },
                     "400": {
@@ -147,21 +147,119 @@ const docTemplate = `{
                 }
             }
         },
-        "/user/{id}": {
+        "/job": {
             "get": {
-                "description": "Returns basic account information and whether freelancer or hirer profiles exist.",
+                "description": "Returns a paginated list of jobs with their required skills. Invalid page or limit values use defaults.",
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
-                    "user account"
+                    "jobs"
                 ],
-                "summary": "Get a user account profile",
+                "summary": "Get all jobs",
                 "parameters": [
                     {
                         "type": "integer",
-                        "description": "User account ID",
-                        "name": "id",
+                        "default": 1,
+                        "description": "Page number",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "default": 10,
+                        "description": "Jobs per page (maximum 10)",
+                        "name": "limit",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_BUIHUUHAIDANG_freelance_market_internal_model.JobListRespond"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_BUIHUUHAIDANG_freelance_market_internal_model.Fail"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Hire Managers can create jobs for their own profile. Admin user IDs configured in ADMIN_USER_IDS can create jobs for any manager.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "jobs"
+                ],
+                "summary": "Create a job",
+                "parameters": [
+                    {
+                        "description": "Job details",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/github_com_BUIHUUHAIDANG_freelance_market_internal_model.AddJobRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_BUIHUUHAIDANG_freelance_market_internal_model.Fail"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_BUIHUUHAIDANG_freelance_market_internal_model.Fail"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_BUIHUUHAIDANG_freelance_market_internal_model.Fail"
+                        }
+                    }
+                }
+            }
+        },
+        "/job/{jobid}": {
+            "get": {
+                "description": "Returns a job and its required skills.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "jobs"
+                ],
+                "summary": "Get a job by ID",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Job ID",
+                        "name": "jobid",
                         "in": "path",
                         "required": true
                     }
@@ -170,11 +268,259 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/github_com_BUIHUUHAIDANG_freelance_market_internal_model.UserAccountProfileRespond"
+                            "$ref": "#/definitions/github_com_BUIHUUHAIDANG_freelance_market_internal_model.JobRespond"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_BUIHUUHAIDANG_freelance_market_internal_model.Fail"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_BUIHUUHAIDANG_freelance_market_internal_model.Fail"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Hire Managers can update only their own jobs. Admin user IDs configured in ADMIN_USER_IDS can update any job.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "jobs"
+                ],
+                "summary": "Update a job",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Job ID",
+                        "name": "jobid",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Updated job details",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/github_com_BUIHUUHAIDANG_freelance_market_internal_model.AddJobRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_BUIHUUHAIDANG_freelance_market_internal_model.Fail"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_BUIHUUHAIDANG_freelance_market_internal_model.Fail"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_BUIHUUHAIDANG_freelance_market_internal_model.Fail"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_BUIHUUHAIDANG_freelance_market_internal_model.Fail"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Hire Managers can delete only their own jobs. Admin user IDs configured in ADMIN_USER_IDS can delete any job.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "jobs"
+                ],
+                "summary": "Delete a job",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Job ID",
+                        "name": "jobid",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_BUIHUUHAIDANG_freelance_market_internal_model.Fail"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_BUIHUUHAIDANG_freelance_market_internal_model.Fail"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_BUIHUUHAIDANG_freelance_market_internal_model.Fail"
+                        }
+                    },
+                    "409": {
+                        "description": "Conflict",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_BUIHUUHAIDANG_freelance_market_internal_model.Fail"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_BUIHUUHAIDANG_freelance_market_internal_model.Fail"
+                        }
+                    }
+                }
+            }
+        },
+        "/job/{jobid}/apply": {
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Creates a proposal for the authenticated freelancer. Admin user IDs configured in ADMIN_USER_IDS may also apply if they have a freelancer profile. The proposal starts with Pending status.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "jobs"
+                ],
+                "summary": "Apply for a job",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Job ID",
+                        "name": "jobid",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Proposal details",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/github_com_BUIHUUHAIDANG_freelance_market_internal_model.ApplyJobRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_BUIHUUHAIDANG_freelance_market_internal_model.Fail"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_BUIHUUHAIDANG_freelance_market_internal_model.Fail"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_BUIHUUHAIDANG_freelance_market_internal_model.Fail"
+                        }
+                    },
+                    "409": {
+                        "description": "Conflict",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_BUIHUUHAIDANG_freelance_market_internal_model.Fail"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_BUIHUUHAIDANG_freelance_market_internal_model.Fail"
+                        }
+                    }
+                }
+            }
+        },
+        "/user/me": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Returns basic account information and whether freelancer or hirer profiles exist for the authenticated user.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "user account"
+                ],
+                "summary": "Get my user account profile",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_BUIHUUHAIDANG_freelance_market_internal_model.UserAccountProfileRespond"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
                         "schema": {
                             "$ref": "#/definitions/github_com_BUIHUUHAIDANG_freelance_market_internal_model.Fail"
                         }
@@ -194,6 +540,11 @@ const docTemplate = `{
                 }
             },
             "put": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "consumes": [
                     "application/json"
                 ],
@@ -203,15 +554,8 @@ const docTemplate = `{
                 "tags": [
                     "user account"
                 ],
-                "summary": "Update a user account profile",
+                "summary": "Update my user account profile",
                 "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "User account ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    },
                     {
                         "description": "Profile fields",
                         "name": "request",
@@ -238,6 +582,12 @@ const docTemplate = `{
                             "$ref": "#/definitions/github_com_BUIHUUHAIDANG_freelance_market_internal_model.Fail"
                         }
                     },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_BUIHUUHAIDANG_freelance_market_internal_model.Fail"
+                        }
+                    },
                     "404": {
                         "description": "Not Found",
                         "schema": {
@@ -253,22 +603,18 @@ const docTemplate = `{
                 }
             },
             "delete": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
                     "user account"
                 ],
-                "summary": "Delete a user account",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "User account ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
+                "summary": "Delete my user account",
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -279,8 +625,8 @@ const docTemplate = `{
                             }
                         }
                     },
-                    "400": {
-                        "description": "Bad Request",
+                    "401": {
+                        "description": "Unauthorized",
                         "schema": {
                             "$ref": "#/definitions/github_com_BUIHUUHAIDANG_freelance_market_internal_model.Fail"
                         }
@@ -300,24 +646,20 @@ const docTemplate = `{
                 }
             }
         },
-        "/user/{id}/freelancer": {
+        "/user/me/freelancer": {
             "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
                     "user account"
                 ],
-                "summary": "Get a user's freelancer profile",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "User account ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
+                "summary": "Get my freelancer profile",
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -325,8 +667,8 @@ const docTemplate = `{
                             "$ref": "#/definitions/github_com_BUIHUUHAIDANG_freelance_market_internal_model.FreelancerProfileRespond"
                         }
                     },
-                    "400": {
-                        "description": "Bad Request",
+                    "401": {
+                        "description": "Unauthorized",
                         "schema": {
                             "$ref": "#/definitions/github_com_BUIHUUHAIDANG_freelance_market_internal_model.Fail"
                         }
@@ -346,24 +688,20 @@ const docTemplate = `{
                 }
             }
         },
-        "/user/{id}/hirer": {
+        "/user/me/hirer": {
             "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
                     "user account"
                 ],
-                "summary": "Get a user's hirer profile",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "User account ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
+                "summary": "Get my hirer profile",
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -371,8 +709,8 @@ const docTemplate = `{
                             "$ref": "#/definitions/github_com_BUIHUUHAIDANG_freelance_market_internal_model.HirerProfileRespond"
                         }
                     },
-                    "400": {
-                        "description": "Bad Request",
+                    "401": {
+                        "description": "Unauthorized",
                         "schema": {
                             "$ref": "#/definitions/github_com_BUIHUUHAIDANG_freelance_market_internal_model.Fail"
                         }
@@ -394,6 +732,67 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "github_com_BUIHUUHAIDANG_freelance_market_internal_model.AddJobRequest": {
+            "type": "object",
+            "required": [
+                "complexity_id",
+                "duration_id",
+                "hire_manager_id",
+                "main_skill_id",
+                "payment_type_id",
+                "title"
+            ],
+            "properties": {
+                "complexity_id": {
+                    "type": "integer"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "duration_id": {
+                    "type": "integer"
+                },
+                "hire_manager_id": {
+                    "type": "integer"
+                },
+                "main_skill_id": {
+                    "type": "integer"
+                },
+                "payment_amount": {
+                    "type": "number"
+                },
+                "payment_type_id": {
+                    "type": "integer"
+                },
+                "required_skill_ids": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
+                "title": {
+                    "type": "string"
+                }
+            }
+        },
+        "github_com_BUIHUUHAIDANG_freelance_market_internal_model.ApplyJobRequest": {
+            "type": "object",
+            "required": [
+                "payment_amount",
+                "payment_type_id"
+            ],
+            "properties": {
+                "freelancer_comment": {
+                    "type": "string"
+                },
+                "payment_amount": {
+                    "type": "number"
+                },
+                "payment_type_id": {
+                    "type": "integer"
+                }
+            }
+        },
         "github_com_BUIHUUHAIDANG_freelance_market_internal_model.Fail": {
             "type": "object",
             "properties": {
@@ -448,6 +847,77 @@ const docTemplate = `{
                 }
             }
         },
+        "github_com_BUIHUUHAIDANG_freelance_market_internal_model.Job": {
+            "type": "object",
+            "properties": {
+                "complexity": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "duration": {
+                    "type": "string"
+                },
+                "hire_manager_name": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "main_skill": {
+                    "type": "string"
+                },
+                "payment_amount": {
+                    "type": "number"
+                },
+                "payment_type": {
+                    "type": "string"
+                },
+                "required_skill": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/github_com_BUIHUUHAIDANG_freelance_market_internal_model.OtherSkill"
+                    }
+                },
+                "title": {
+                    "type": "string"
+                }
+            }
+        },
+        "github_com_BUIHUUHAIDANG_freelance_market_internal_model.JobListRespond": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/github_com_BUIHUUHAIDANG_freelance_market_internal_model.Job"
+                    }
+                },
+                "limit": {
+                    "type": "integer"
+                },
+                "page": {
+                    "type": "integer"
+                }
+            }
+        },
+        "github_com_BUIHUUHAIDANG_freelance_market_internal_model.JobRespond": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/github_com_BUIHUUHAIDANG_freelance_market_internal_model.Job"
+                }
+            }
+        },
+        "github_com_BUIHUUHAIDANG_freelance_market_internal_model.OtherSkill": {
+            "type": "object",
+            "properties": {
+                "other_skill": {
+                    "type": "string"
+                }
+            }
+        },
         "github_com_BUIHUUHAIDANG_freelance_market_internal_model.SignInInputUserAccount": {
             "type": "object",
             "required": [
@@ -482,6 +952,14 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "password_hash": {
+                    "type": "string"
+                }
+            }
+        },
+        "github_com_BUIHUUHAIDANG_freelance_market_internal_model.SignUpRespond": {
+            "type": "object",
+            "properties": {
+                "token": {
                     "type": "string"
                 }
             }
@@ -533,6 +1011,13 @@ const docTemplate = `{
                     "type": "string"
                 }
             }
+        }
+    },
+    "securityDefinitions": {
+        "BearerAuth": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
         }
     }
 }`

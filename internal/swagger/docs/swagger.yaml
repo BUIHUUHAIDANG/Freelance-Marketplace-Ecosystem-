@@ -1,5 +1,47 @@
 basePath: /
 definitions:
+  github_com_BUIHUUHAIDANG_freelance_market_internal_model.AddJobRequest:
+    properties:
+      complexity_id:
+        type: integer
+      description:
+        type: string
+      duration_id:
+        type: integer
+      hire_manager_id:
+        type: integer
+      main_skill_id:
+        type: integer
+      payment_amount:
+        type: number
+      payment_type_id:
+        type: integer
+      required_skill_ids:
+        items:
+          type: integer
+        type: array
+      title:
+        type: string
+    required:
+    - complexity_id
+    - duration_id
+    - hire_manager_id
+    - main_skill_id
+    - payment_type_id
+    - title
+    type: object
+  github_com_BUIHUUHAIDANG_freelance_market_internal_model.ApplyJobRequest:
+    properties:
+      freelancer_comment:
+        type: string
+      payment_amount:
+        type: number
+      payment_type_id:
+        type: integer
+    required:
+    - payment_amount
+    - payment_type_id
+    type: object
   github_com_BUIHUUHAIDANG_freelance_market_internal_model.Fail:
     properties:
       error:
@@ -35,6 +77,52 @@ definitions:
       user_account_id:
         type: integer
     type: object
+  github_com_BUIHUUHAIDANG_freelance_market_internal_model.Job:
+    properties:
+      complexity:
+        type: string
+      description:
+        type: string
+      duration:
+        type: string
+      hire_manager_name:
+        type: string
+      id:
+        type: integer
+      main_skill:
+        type: string
+      payment_amount:
+        type: number
+      payment_type:
+        type: string
+      required_skill:
+        items:
+          $ref: '#/definitions/github_com_BUIHUUHAIDANG_freelance_market_internal_model.OtherSkill'
+        type: array
+      title:
+        type: string
+    type: object
+  github_com_BUIHUUHAIDANG_freelance_market_internal_model.JobListRespond:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/github_com_BUIHUUHAIDANG_freelance_market_internal_model.Job'
+        type: array
+      limit:
+        type: integer
+      page:
+        type: integer
+    type: object
+  github_com_BUIHUUHAIDANG_freelance_market_internal_model.JobRespond:
+    properties:
+      data:
+        $ref: '#/definitions/github_com_BUIHUUHAIDANG_freelance_market_internal_model.Job'
+    type: object
+  github_com_BUIHUUHAIDANG_freelance_market_internal_model.OtherSkill:
+    properties:
+      other_skill:
+        type: string
+    type: object
   github_com_BUIHUUHAIDANG_freelance_market_internal_model.SignInInputUserAccount:
     properties:
       email:
@@ -60,6 +148,11 @@ definitions:
     - first_name
     - last_name
     - password_hash
+    type: object
+  github_com_BUIHUUHAIDANG_freelance_market_internal_model.SignUpRespond:
+    properties:
+      token:
+        type: string
     type: object
   github_com_BUIHUUHAIDANG_freelance_market_internal_model.UpdateUserProfileRequest:
     properties:
@@ -116,7 +209,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/github_com_BUIHUUHAIDANG_freelance_market_internal_model.UserRespond'
+            $ref: '#/definitions/github_com_BUIHUUHAIDANG_freelance_market_internal_model.SignUpRespond'
         "400":
           description: Bad Request
           schema:
@@ -184,12 +277,80 @@ paths:
       summary: Check API status
       tags:
       - health
-  /user/{id}:
-    delete:
+  /job:
+    get:
+      description: Returns a paginated list of jobs with their required skills. Invalid
+        page or limit values use defaults.
       parameters:
-      - description: User account ID
+      - default: 1
+        description: Page number
+        in: query
+        name: page
+        type: integer
+      - default: 10
+        description: Jobs per page (maximum 10)
+        in: query
+        name: limit
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_BUIHUUHAIDANG_freelance_market_internal_model.JobListRespond'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_BUIHUUHAIDANG_freelance_market_internal_model.Fail'
+      summary: Get all jobs
+      tags:
+      - jobs
+    post:
+      consumes:
+      - application/json
+      description: Hire Managers can create jobs for their own profile. Admin user
+        IDs configured in ADMIN_USER_IDS can create jobs for any manager.
+      parameters:
+      - description: Job details
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_BUIHUUHAIDANG_freelance_market_internal_model.AddJobRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_BUIHUUHAIDANG_freelance_market_internal_model.Fail'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/github_com_BUIHUUHAIDANG_freelance_market_internal_model.Fail'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_BUIHUUHAIDANG_freelance_market_internal_model.Fail'
+      security:
+      - BearerAuth: []
+      summary: Create a job
+      tags:
+      - jobs
+  /job/{jobid}:
+    delete:
+      description: Hire Managers can delete only their own jobs. Admin user IDs configured
+        in ADMIN_USER_IDS can delete any job.
+      parameters:
+      - description: Job ID
         in: path
-        name: id
+        name: jobid
         required: true
         type: integer
       produces:
@@ -205,24 +366,33 @@ paths:
           description: Bad Request
           schema:
             $ref: '#/definitions/github_com_BUIHUUHAIDANG_freelance_market_internal_model.Fail'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/github_com_BUIHUUHAIDANG_freelance_market_internal_model.Fail'
         "404":
           description: Not Found
+          schema:
+            $ref: '#/definitions/github_com_BUIHUUHAIDANG_freelance_market_internal_model.Fail'
+        "409":
+          description: Conflict
           schema:
             $ref: '#/definitions/github_com_BUIHUUHAIDANG_freelance_market_internal_model.Fail'
         "500":
           description: Internal Server Error
           schema:
             $ref: '#/definitions/github_com_BUIHUUHAIDANG_freelance_market_internal_model.Fail'
-      summary: Delete a user account
+      security:
+      - BearerAuth: []
+      summary: Delete a job
       tags:
-      - user account
+      - jobs
     get:
-      description: Returns basic account information and whether freelancer or hirer
-        profiles exist.
+      description: Returns a job and its required skills.
       parameters:
-      - description: User account ID
+      - description: Job ID
         in: path
-        name: id
+        name: jobid
         required: true
         type: integer
       produces:
@@ -231,9 +401,49 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/github_com_BUIHUUHAIDANG_freelance_market_internal_model.UserAccountProfileRespond'
+            $ref: '#/definitions/github_com_BUIHUUHAIDANG_freelance_market_internal_model.JobRespond'
         "400":
           description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_BUIHUUHAIDANG_freelance_market_internal_model.Fail'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_BUIHUUHAIDANG_freelance_market_internal_model.Fail'
+      summary: Get a job by ID
+      tags:
+      - jobs
+    put:
+      consumes:
+      - application/json
+      description: Hire Managers can update only their own jobs. Admin user IDs configured
+        in ADMIN_USER_IDS can update any job.
+      parameters:
+      - description: Job ID
+        in: path
+        name: jobid
+        required: true
+        type: integer
+      - description: Updated job details
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_BUIHUUHAIDANG_freelance_market_internal_model.AddJobRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_BUIHUUHAIDANG_freelance_market_internal_model.Fail'
+        "403":
+          description: Forbidden
           schema:
             $ref: '#/definitions/github_com_BUIHUUHAIDANG_freelance_market_internal_model.Fail'
         "404":
@@ -244,18 +454,122 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/github_com_BUIHUUHAIDANG_freelance_market_internal_model.Fail'
-      summary: Get a user account profile
+      security:
+      - BearerAuth: []
+      summary: Update a job
+      tags:
+      - jobs
+  /job/{jobid}/apply:
+    post:
+      consumes:
+      - application/json
+      description: Creates a proposal for the authenticated freelancer. Admin user
+        IDs configured in ADMIN_USER_IDS may also apply if they have a freelancer
+        profile. The proposal starts with Pending status.
+      parameters:
+      - description: Job ID
+        in: path
+        name: jobid
+        required: true
+        type: integer
+      - description: Proposal details
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_BUIHUUHAIDANG_freelance_market_internal_model.ApplyJobRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_BUIHUUHAIDANG_freelance_market_internal_model.Fail'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/github_com_BUIHUUHAIDANG_freelance_market_internal_model.Fail'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/github_com_BUIHUUHAIDANG_freelance_market_internal_model.Fail'
+        "409":
+          description: Conflict
+          schema:
+            $ref: '#/definitions/github_com_BUIHUUHAIDANG_freelance_market_internal_model.Fail'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_BUIHUUHAIDANG_freelance_market_internal_model.Fail'
+      security:
+      - BearerAuth: []
+      summary: Apply for a job
+      tags:
+      - jobs
+  /user/me:
+    delete:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_BUIHUUHAIDANG_freelance_market_internal_model.Fail'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/github_com_BUIHUUHAIDANG_freelance_market_internal_model.Fail'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_BUIHUUHAIDANG_freelance_market_internal_model.Fail'
+      security:
+      - BearerAuth: []
+      summary: Delete my user account
+      tags:
+      - user account
+    get:
+      description: Returns basic account information and whether freelancer or hirer
+        profiles exist for the authenticated user.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_BUIHUUHAIDANG_freelance_market_internal_model.UserAccountProfileRespond'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_BUIHUUHAIDANG_freelance_market_internal_model.Fail'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/github_com_BUIHUUHAIDANG_freelance_market_internal_model.Fail'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_BUIHUUHAIDANG_freelance_market_internal_model.Fail'
+      security:
+      - BearerAuth: []
+      summary: Get my user account profile
       tags:
       - user account
     put:
       consumes:
       - application/json
       parameters:
-      - description: User account ID
-        in: path
-        name: id
-        required: true
-        type: integer
       - description: Profile fields
         in: body
         name: request
@@ -275,6 +589,10 @@ paths:
           description: Bad Request
           schema:
             $ref: '#/definitions/github_com_BUIHUUHAIDANG_freelance_market_internal_model.Fail'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_BUIHUUHAIDANG_freelance_market_internal_model.Fail'
         "404":
           description: Not Found
           schema:
@@ -283,17 +601,13 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/github_com_BUIHUUHAIDANG_freelance_market_internal_model.Fail'
-      summary: Update a user account profile
+      security:
+      - BearerAuth: []
+      summary: Update my user account profile
       tags:
       - user account
-  /user/{id}/freelancer:
+  /user/me/freelancer:
     get:
-      parameters:
-      - description: User account ID
-        in: path
-        name: id
-        required: true
-        type: integer
       produces:
       - application/json
       responses:
@@ -301,8 +615,8 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/github_com_BUIHUUHAIDANG_freelance_market_internal_model.FreelancerProfileRespond'
-        "400":
-          description: Bad Request
+        "401":
+          description: Unauthorized
           schema:
             $ref: '#/definitions/github_com_BUIHUUHAIDANG_freelance_market_internal_model.Fail'
         "404":
@@ -313,17 +627,13 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/github_com_BUIHUUHAIDANG_freelance_market_internal_model.Fail'
-      summary: Get a user's freelancer profile
+      security:
+      - BearerAuth: []
+      summary: Get my freelancer profile
       tags:
       - user account
-  /user/{id}/hirer:
+  /user/me/hirer:
     get:
-      parameters:
-      - description: User account ID
-        in: path
-        name: id
-        required: true
-        type: integer
       produces:
       - application/json
       responses:
@@ -331,8 +641,8 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/github_com_BUIHUUHAIDANG_freelance_market_internal_model.HirerProfileRespond'
-        "400":
-          description: Bad Request
+        "401":
+          description: Unauthorized
           schema:
             $ref: '#/definitions/github_com_BUIHUUHAIDANG_freelance_market_internal_model.Fail'
         "404":
@@ -343,7 +653,14 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/github_com_BUIHUUHAIDANG_freelance_market_internal_model.Fail'
-      summary: Get a user's hirer profile
+      security:
+      - BearerAuth: []
+      summary: Get my hirer profile
       tags:
       - user account
+securityDefinitions:
+  BearerAuth:
+    in: header
+    name: Authorization
+    type: apiKey
 swagger: "2.0"

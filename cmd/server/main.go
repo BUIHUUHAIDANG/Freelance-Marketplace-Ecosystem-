@@ -13,6 +13,9 @@ import (
 // @version 1.0
 // @description API for the Freelance Marketplace project.
 // @BasePath /
+// @SecurityDefinitions.apikey BearerAuth
+// @in header
+// @name Authorization
 func main() {
 	config.ConnectWithDataBase()
 	config.SetConfig()

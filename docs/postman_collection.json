@@ -5,7 +5,7 @@
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "variable": [
-    { "key": "baseUrl", "value": "http://localhost:8085/api/v1" },
+    { "key": "baseUrl", "value": "http://localhost:8085" },
     { "key": "jobId", "value": "1" },
     { "key": "hireManagerId", "value": "1" },
     { "key": "durationId", "value": "1" },
@@ -25,14 +25,14 @@
       "name": "List jobs",
       "request": {
         "method": "GET",
-        "url": "{{baseUrl}}/jobs"
+        "url": "{{baseUrl}}/job"
       }
     },
     {
       "name": "Get job",
       "request": {
         "method": "GET",
-        "url": "{{baseUrl}}/jobs/{{jobId}}"
+        "url": "{{baseUrl}}/job/{{jobId}}"
       }
     },
     {
@@ -44,7 +44,7 @@
             "type": "text/javascript",
             "exec": [
               "if (pm.response.code === 201) {",
-              "  pm.collectionVariables.set('jobId', pm.response.json().data.id);",
+              "  pm.collectionVariables.set('jobId', pm.response.json().job_id);",
               "}"
             ]
           }
@@ -55,9 +55,9 @@
         "header": [{ "key": "Content-Type", "value": "application/json" }],
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"hire_manager_id\": {{hireManagerId}},\n  \"duration_id\": {{durationId}},\n  \"complexity_id\": {{complexityId}},\n  \"description\": \"Build a responsive landing page\",\n  \"main_skill_id\": {{skillId}},\n  \"payment_type_id\": {{paymentTypeId}},\n  \"payment_amount\": 500,\n  \"title\": \"Frontend developer needed\"\n}"
+          "raw": "{\n  \"hire_manager_id\": {{hireManagerId}},\n  \"duration_id\": {{durationId}},\n  \"complexity_id\": {{complexityId}},\n  \"description\": \"Build a responsive landing page\",\n  \"main_skill_id\": {{skillId}},\n  \"payment_type_id\": {{paymentTypeId}},\n  \"payment_amount\": 500,\n  \"title\": \"Frontend developer needed\",\n  \"required_skill_ids\": [{{skillId}}]\n}"
         },
-        "url": "{{baseUrl}}/jobs"
+        "url": "{{baseUrl}}/job"
       }
     },
     {
@@ -67,16 +67,16 @@
         "header": [{ "key": "Content-Type", "value": "application/json" }],
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"hire_manager_id\": {{hireManagerId}},\n  \"duration_id\": {{durationId}},\n  \"complexity_id\": {{complexityId}},\n  \"description\": \"Updated project scope\",\n  \"main_skill_id\": {{skillId}},\n  \"payment_type_id\": {{paymentTypeId}},\n  \"payment_amount\": 650,\n  \"title\": \"Senior frontend developer needed\"\n}"
+          "raw": "{\n  \"hire_manager_id\": {{hireManagerId}},\n  \"duration_id\": {{durationId}},\n  \"complexity_id\": {{complexityId}},\n  \"description\": \"Updated project scope\",\n  \"main_skill_id\": {{skillId}},\n  \"payment_type_id\": {{paymentTypeId}},\n  \"payment_amount\": 650,\n  \"title\": \"Senior frontend developer needed\",\n  \"required_skill_ids\": [{{skillId}}]\n}"
         },
-        "url": "{{baseUrl}}/jobs/{{jobId}}"
+        "url": "{{baseUrl}}/job/{{jobId}}"
       }
     },
     {
       "name": "Delete job",
       "request": {
         "method": "DELETE",
-        "url": "{{baseUrl}}/jobs/{{jobId}}"
+        "url": "{{baseUrl}}/job/{{jobId}}"
       }
     }
   ]

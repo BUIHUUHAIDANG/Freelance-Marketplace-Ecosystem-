@@ -9,12 +9,12 @@ import (
 
 func UserRoutes(router *gin.Engine, db *sql.DB) {
 	protected := router.Group("/")
-	protected.Use(middleware.AuthMiddleware())
+	protected.Use(middleware.JwtAuthMiddleware())
 	{
-		protected.GET("/user/:id", controller.GetUserProfile(db))
-		protected.PUT("/user/:id", controller.UpdateUserProfile(db))
-		protected.DELETE("/user/:id", controller.DeleteUserProfile(db))
-		protected.GET("/user/:id/freelancer", controller.GetUserFreelancerProfile(db))
-		protected.GET("/user/:id/hirer", controller.GetUserHirerProfile(db))
+		protected.GET("/user/me", controller.GetUserProfile(db))
+		protected.PUT("/user/me", controller.UpdateUserProfile(db))
+		protected.DELETE("/user/me", controller.DeleteUserProfile(db))
+		protected.GET("/user/me/freelancer", controller.GetUserFreelancerProfile(db))
+		protected.GET("/user/me/hirer", controller.GetUserHirerProfile(db))
 	}
 }

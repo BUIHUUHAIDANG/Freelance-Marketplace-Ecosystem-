@@ -5,7 +5,6 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
-	"strconv"
 	"strings"
 
 	"github.com/BUIHUUHAIDANG/freelance_market/internal/model"
@@ -13,20 +12,20 @@ import (
 )
 
 // GetUserProfile godoc
-// @Summary Get a user account profile
-// @Description Returns basic account information and whether freelancer or hirer profiles exist.
+// @Summary Get my user account profile
+// @Description Returns basic account information and whether freelancer or hirer profiles exist for the authenticated user.
 // @Tags user account
 // @Produce json
-// @Param id path int true "User account ID"
+// @Security BearerAuth
 // @Success 200 {object} model.UserAccountProfileRespond
-// @Failure 400 {object} model.Fail
+// @Failure 401 {object} model.Fail
 // @Failure 404 {object} model.Fail
 // @Failure 500 {object} model.Fail
-// @Router /user/{id} [get]
+// @Router /user/me [get]
 func GetUserProfile(db *sql.DB) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		var userAccountProfile model.UserAccountProfileRespond
-		userID, ok := parseUserID(ctx)
+		userID, ok := currentUserID(ctx)
 		if !ok {
 			return
 		}
@@ -64,20 +63,21 @@ func GetUserProfile(db *sql.DB) gin.HandlerFunc {
 }
 
 // UpdateUserProfile godoc
-// @Summary Update a user account profile
+// @Summary Update my user account profile
 // @Tags user account
 // @Accept json
 // @Produce json
-// @Param id path int true "User account ID"
 // @Param request body model.UpdateUserProfileRequest true "Profile fields"
+// @Security BearerAuth
 // @Success 200 {object} map[string]string
 // @Failure 400 {object} model.Fail
+// @Failure 401 {object} model.Fail
 // @Failure 404 {object} model.Fail
 // @Failure 500 {object} model.Fail
-// @Router /user/{id} [put]
+// @Router /user/me [put]
 func UpdateUserProfile(db *sql.DB) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		id, ok := parseUserID(ctx)
+		id, ok := currentUserID(ctx)
 		if !ok {
 			return
 		}
@@ -146,18 +146,18 @@ func UpdateUserProfile(db *sql.DB) gin.HandlerFunc {
 }
 
 // DeleteUserProfile godoc
-// @Summary Delete a user account
+// @Summary Delete my user account
 // @Tags user account
 // @Produce json
-// @Param id path int true "User account ID"
+// @Security BearerAuth
 // @Success 200 {object} map[string]string
-// @Failure 400 {object} model.Fail
+// @Failure 401 {object} model.Fail
 // @Failure 404 {object} model.Fail
 // @Failure 500 {object} model.Fail
-// @Router /user/{id} [delete]
+// @Router /user/me [delete]
 func DeleteUserProfile(db *sql.DB) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		id, ok := parseUserID(ctx)
+		id, ok := currentUserID(ctx)
 		if !ok {
 			return
 		}
@@ -189,18 +189,18 @@ func DeleteUserProfile(db *sql.DB) gin.HandlerFunc {
 }
 
 // GetUserFreelancerProfile godoc
-// @Summary Get a user's freelancer profile
+// @Summary Get my freelancer profile
 // @Tags user account
 // @Produce json
-// @Param id path int true "User account ID"
+// @Security BearerAuth
 // @Success 200 {object} model.FreelancerProfileRespond
-// @Failure 400 {object} model.Fail
+// @Failure 401 {object} model.Fail
 // @Failure 404 {object} model.Fail
 // @Failure 500 {object} model.Fail
-// @Router /user/{id}/freelancer [get]
+// @Router /user/me/freelancer [get]
 func GetUserFreelancerProfile(db *sql.DB) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		userID, ok := parseUserID(ctx)
+		userID, ok := currentUserID(ctx)
 		if !ok {
 			return
 		}
@@ -230,18 +230,18 @@ func GetUserFreelancerProfile(db *sql.DB) gin.HandlerFunc {
 }
 
 // GetUserHirerProfile godoc
-// @Summary Get a user's hirer profile
+// @Summary Get my hirer profile
 // @Tags user account
 // @Produce json
-// @Param id path int true "User account ID"
+// @Security BearerAuth
 // @Success 200 {object} model.HirerProfileRespond
-// @Failure 400 {object} model.Fail
+// @Failure 401 {object} model.Fail
 // @Failure 404 {object} model.Fail
 // @Failure 500 {object} model.Fail
-// @Router /user/{id}/hirer [get]
+// @Router /user/me/hirer [get]
 func GetUserHirerProfile(db *sql.DB) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		userID, ok := parseUserID(ctx)
+		userID, ok := currentUserID(ctx)
 		if !ok {
 			return
 		}
@@ -274,13 +274,13 @@ func GetUserHirerProfile(db *sql.DB) gin.HandlerFunc {
 	}
 }
 
-func parseUserID(ctx *gin.Context) (int64, bool) {
-	id, err := strconv.ParseInt(ctx.Param("id"), 10, 64)
-	if err != nil || id < 1 {
-		ctx.JSON(http.StatusBadRequest, model.Fail{Error: "User ID must be a positive integer"})
+func currentUserID(ctx *gin.Context) (int64, bool) {
+	userID, ok := authenticatedUserID(ctx)
+	if !ok {
+		ctx.JSON(http.StatusUnauthorized, model.Fail{Error: "Unauthorized"})
 		return 0, false
 	}
-	return id, true
+	return userID, true
 }
 
 func writeProfileQueryError(ctx *gin.Context, err error, notFoundMessage string) {

@@ -4,6 +4,7 @@ import (
 	"database/sql"
 
 	"github.com/BUIHUUHAIDANG/freelance_market/internal/model"
+	"github.com/BUIHUUHAIDANG/freelance_market/internal/utils"
 	"github.com/gin-gonic/gin"
 	"golang.org/x/crypto/bcrypt"
 )
@@ -23,7 +24,7 @@ func passwordHash(password string) (string, error) {
 // @Accept json
 // @Produce json
 // @Param request body model.SignInInputUserAccount true "Login credentials"
-// @Success 200 {object} model.UserRespond
+// @Success 200 {object} model.SignUpRespond
 // @Failure 400 {object} model.Fail
 // @Failure 401 {object} model.Fail
 // @Failure 404 {object} model.Fail
@@ -60,12 +61,15 @@ func LoginHandler(db *sql.DB) gin.HandlerFunc {
 			})
 			return
 		}
-
-		c.JSON(200, model.UserRespond{
-			ID:        int64(userAccount.ID),
-			Email:     userAccount.Email,
-			FirstName: userAccount.FirstName,
-			LastName:  userAccount.LastName,
+		token, err := utils.GenerateToken(int64(userAccount.ID))
+		if err != nil {
+			c.JSON(500, model.Fail{
+				Error: err.Error(),
+			})
+			return
+		}
+		c.JSON(200, model.SignUpRespond{
+			Token: "Bearer " + token,
 		})
 	}
 }
