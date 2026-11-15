@@ -26,6 +26,8 @@ go.work.sum
 
 # env file
 .env
+/secretIdGoogle.json
+/secretGoogle.json
 
 # Editor/IDE
 # .idea/

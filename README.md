@@ -44,13 +44,45 @@ The API uses the `freelance_platform` database created by [`scripts/database.sql
    MYSQL_DSN='your_user:your_password@tcp(127.0.0.1:3306)/freelance_platform?parseTime=true&charset=utf8mb4'
    ```
 
-3. Start the server:
+   Also configure `SECRET_KEY` and `TOKEN_LIFESPAN` in `.env` or the environment. `SECRET_KEY` is required to sign and verify JWTs; use a long, random value and do not commit it. `TOKEN_LIFESPAN` is the token lifetime in hours and must be a positive integer.
+
+3. Set a port and start the server:
 
    ```bash
+   export PORT=8085
+   export SECRET_KEY='your-long-random-secret'
+   export TOKEN_LIFESPAN=24
+   export ADMIN_USER_IDS=1,5
    go run ./cmd/server
    ```
 
-   The API listens on `http://localhost:8085`.
+   The API listens on `http://localhost:8085`. Login returns a `token` field. Send it to protected endpoints as `Authorization: Bearer <token>`. `ADMIN_USER_IDS` is an optional comma-separated allowlist of `user_account.id` values with admin override permissions.
+
+   User profile endpoints operate on the authenticated account; the account ID is read from the JWT, not from the URL:
+
+   - `GET /user/me`
+   - `PUT /user/me`
+   - `DELETE /user/me`
+   - `GET /user/me/freelancer`
+   - `GET /user/me/hirer`
+
+### Reading the Job CRUD code
+
+Follow one request through these folders:
+
+1. [`internal/model/model.go`](./internal/model/model.go) defines the Job fields used in JSON and SQL.
+2. [`internal/routes/routes.go`](./internal/routes/routes.go) maps HTTP methods and URLs to controller functions.
+3. [`internal/controller/jobController.go`](./internal/controller/jobController.go) validates input and runs SQL queries against the `job` table.
+
+Hire Managers can create jobs and edit/delete only jobs owned by their profile. Freelancers can submit applications. Users in `ADMIN_USER_IDS` can manage any job. `GET /job` and `GET /job/:jobid` remain public.
+
+The job routes are `POST /job`, `PUT /job/:jobid`, and `DELETE /job/:jobid`. Create and update accept the job reference IDs and an optional `required_skill_ids` array. The main skill is automatically included in the job's required skills. `POST /job/:jobid/apply` accepts `payment_type_id`, `payment_amount`, and an optional `freelancer_comment`; it creates a proposal with `Pending` status. Ensure `status_catalog` contains a row whose `status_name` is `Pending`.
+
+| Operation | Request | Repository action |
+|---|---|---|
+| Create | `POST /job` | Insert job and required skills |
+| Update | `PUT /job/:jobid` | Replace job fields and required skills |
+| Delete | `DELETE /job/:jobid` | Delete job |
 
 ### Endpoints
 
@@ -59,11 +91,12 @@ All responses use JSON. IDs in the request body must reference existing rows in 
 | Method | Endpoint | Purpose |
 |---|---|---|
 | GET | `/api/v1/health` | Check API and database connectivity |
-| GET | `/api/v1/jobs` | Browse jobs; optional `q`, `hire_manager_id`, `skill_id` filters |
-| GET | `/api/v1/jobs/:id` | Get a job |
-| POST | `/api/v1/jobs` | Create a job |
-| PUT | `/api/v1/jobs/:id` | Replace a job |
-| DELETE | `/api/v1/jobs/:id` | Delete a job |
+| GET | `/job` | Browse jobs with `page` and `limit` query parameters |
+| GET | `/job/:jobid` | Get a job |
+| POST | `/job` | Create a job |
+| PUT | `/job/:jobid` | Replace a job |
+| DELETE | `/job/:jobid` | Delete a job |
+| POST | `/job/:jobid/apply` | Apply to a job as a freelancer |
 
 Job request example:
 
@@ -76,8 +109,23 @@ Job request example:
   "main_skill_id": 1,
   "payment_type_id": 1,
   "payment_amount": 500,
-  "title": "Frontend developer needed"
+  "title": "Frontend developer needed",
+  "required_skill_ids": [1, 2, 3]
 }
 ```
 
-Import [`docs/postman_collection.json`](./docs/postman_collection.json) into Postman to try the endpoints. Before creating a job, update the sample IDs to records that exist in your database. The collection saves the created job ID for the subsequent get/update/delete requests. Successful creates return `201`, reads/updates return `200`, deletes return `204`; invalid input returns `400`, missing records `404`, and constraint conflicts `409`.
+Application request example:
+
+```json
+{
+  "payment_type_id": 1,
+  "payment_amount": 500,
+  "freelancer_comment": "I have experience delivering similar projects."
+}
+```
+
+Import [`docs/postman_collection.json`](./docs/postman_collection.json) into Postman to try the endpoints. Before creating a job, update the sample IDs to records that exist in your database. The collection saves the created job ID for the subsequent get/update/delete requests. Successful creates return `201` with the new `job_id`; reads, updates, and deletes return `200`. Invalid input returns `400` and missing records return `404`.
+
+### Swagger documentation
+
+Swagger documentation is generated from Swaggo annotations in the API code. Run `go run github.com/swaggo/swag/cmd/swag@v1.16.6 init -g cmd/server/main.go -o internal/swagger/docs --parseInternal --parseDependency` after changing annotations, then start the server and open `http://localhost:8085/swagger/index.html`. The page documents and lets you try the currently registered endpoints (`/health`, `/auth/register`, and `/auth/login`), and protected endpoints show an Authorize button for the `Authorization: Bearer <token>` header.
