@@ -21,7 +21,7 @@ func HealthHandler(c *gin.Context) {
 func RegisterRoutes(router *gin.Engine, db *sql.DB) {
 	router.GET("/health", HealthHandler)
 	router.POST("/auth/login", controller.LoginHandler(db))
-	router.GET("/auth/register", controller.RegisterHandler(db))
+	router.POST("/auth/register", controller.RegisterHandler(db))
 	swagger.RegisterRoutes(router)
 	UserRoutes(router, db)
 	JobRoute(router, db)
