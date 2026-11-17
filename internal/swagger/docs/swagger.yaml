@@ -60,6 +60,13 @@ definitions:
       user_account_id:
         type: integer
     type: object
+  github_com_BUIHUUHAIDANG_freelance_market_internal_model.FreelancerRegisterInput:
+    properties:
+      location:
+        type: string
+      overview:
+        type: string
+    type: object
   github_com_BUIHUUHAIDANG_freelance_market_internal_model.HirerProfileRespond:
     properties:
       company_id:
@@ -76,6 +83,15 @@ definitions:
         type: string
       user_account_id:
         type: integer
+    type: object
+  github_com_BUIHUUHAIDANG_freelance_market_internal_model.HirerRegisterInput:
+    properties:
+      company_id:
+        type: integer
+      location:
+        type: string
+    required:
+    - company_id
     type: object
   github_com_BUIHUUHAIDANG_freelance_market_internal_model.Job:
     properties:
@@ -656,6 +672,90 @@ paths:
       security:
       - BearerAuth: []
       summary: Get my hirer profile
+      tags:
+      - user account
+  /user/me/register_freelancer:
+    post:
+      consumes:
+      - application/json
+      description: Creates a freelancer profile for the authenticated user.
+      parameters:
+      - description: Freelancer profile details
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_BUIHUUHAIDANG_freelance_market_internal_model.FreelancerRegisterInput'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_BUIHUUHAIDANG_freelance_market_internal_model.Fail'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_BUIHUUHAIDANG_freelance_market_internal_model.Fail'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/github_com_BUIHUUHAIDANG_freelance_market_internal_model.Fail'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_BUIHUUHAIDANG_freelance_market_internal_model.Fail'
+      security:
+      - BearerAuth: []
+      summary: Register as a freelancer
+      tags:
+      - user account
+  /user/me/register_hirer:
+    post:
+      consumes:
+      - application/json
+      description: Creates a hire manager profile for the authenticated user.
+      parameters:
+      - description: Hirer profile details
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_BUIHUUHAIDANG_freelance_market_internal_model.HirerRegisterInput'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_BUIHUUHAIDANG_freelance_market_internal_model.Fail'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_BUIHUUHAIDANG_freelance_market_internal_model.Fail'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/github_com_BUIHUUHAIDANG_freelance_market_internal_model.Fail'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_BUIHUUHAIDANG_freelance_market_internal_model.Fail'
+      security:
+      - BearerAuth: []
+      summary: Register as a hirer
       tags:
       - user account
 securityDefinitions:

@@ -292,6 +292,20 @@ func writeProfileQueryError(ctx *gin.Context, err error, notFoundMessage string)
 	ctx.JSON(http.StatusInternalServerError, model.Fail{Error: err.Error()})
 }
 
+// RegisterAsFreelancer godoc
+// @Summary Register as a freelancer
+// @Description Creates a freelancer profile for the authenticated user.
+// @Tags user account
+// @Accept json
+// @Produce json
+// @Param request body model.FreelancerRegisterInput true "Freelancer profile details"
+// @Security BearerAuth
+// @Success 201 {object} map[string]string
+// @Failure 400 {object} model.Fail
+// @Failure 401 {object} model.Fail
+// @Failure 404 {object} model.Fail
+// @Failure 500 {object} model.Fail
+// @Router /user/me/register_freelancer [post]
 func RegisterAsFreelancer(db *sql.DB) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		currentUserID,ok := currentUserID(ctx)
@@ -336,6 +350,20 @@ func RegisterAsFreelancer(db *sql.DB) gin.HandlerFunc {
 	}
 }
 
+// RegisterAsHirer godoc
+// @Summary Register as a hirer
+// @Description Creates a hire manager profile for the authenticated user.
+// @Tags user account
+// @Accept json
+// @Produce json
+// @Param request body model.HirerRegisterInput true "Hirer profile details"
+// @Security BearerAuth
+// @Success 201 {object} map[string]string
+// @Failure 400 {object} model.Fail
+// @Failure 401 {object} model.Fail
+// @Failure 404 {object} model.Fail
+// @Failure 500 {object} model.Fail
+// @Router /user/me/register_hirer [post]
 func RegisterAsHirer(db *sql.DB) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		currentUserID,ok := currentUserID(ctx)

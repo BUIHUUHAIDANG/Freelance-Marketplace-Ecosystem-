@@ -729,6 +729,138 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "/user/me/register_freelancer": {
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Creates a freelancer profile for the authenticated user.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "user account"
+                ],
+                "summary": "Register as a freelancer",
+                "parameters": [
+                    {
+                        "description": "Freelancer profile details",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/github_com_BUIHUUHAIDANG_freelance_market_internal_model.FreelancerRegisterInput"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_BUIHUUHAIDANG_freelance_market_internal_model.Fail"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_BUIHUUHAIDANG_freelance_market_internal_model.Fail"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_BUIHUUHAIDANG_freelance_market_internal_model.Fail"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_BUIHUUHAIDANG_freelance_market_internal_model.Fail"
+                        }
+                    }
+                }
+            }
+        },
+        "/user/me/register_hirer": {
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Creates a hire manager profile for the authenticated user.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "user account"
+                ],
+                "summary": "Register as a hirer",
+                "parameters": [
+                    {
+                        "description": "Hirer profile details",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/github_com_BUIHUUHAIDANG_freelance_market_internal_model.HirerRegisterInput"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_BUIHUUHAIDANG_freelance_market_internal_model.Fail"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_BUIHUUHAIDANG_freelance_market_internal_model.Fail"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_BUIHUUHAIDANG_freelance_market_internal_model.Fail"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_BUIHUUHAIDANG_freelance_market_internal_model.Fail"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -821,6 +953,17 @@ const docTemplate = `{
                 }
             }
         },
+        "github_com_BUIHUUHAIDANG_freelance_market_internal_model.FreelancerRegisterInput": {
+            "type": "object",
+            "properties": {
+                "location": {
+                    "type": "string"
+                },
+                "overview": {
+                    "type": "string"
+                }
+            }
+        },
         "github_com_BUIHUUHAIDANG_freelance_market_internal_model.HirerProfileRespond": {
             "type": "object",
             "properties": {
@@ -844,6 +987,20 @@ const docTemplate = `{
                 },
                 "user_account_id": {
                     "type": "integer"
+                }
+            }
+        },
+        "github_com_BUIHUUHAIDANG_freelance_market_internal_model.HirerRegisterInput": {
+            "type": "object",
+            "required": [
+                "company_id"
+            ],
+            "properties": {
+                "company_id": {
+                    "type": "integer"
+                },
+                "location": {
+                    "type": "string"
                 }
             }
         },
