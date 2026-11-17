@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"net/http"
 	"strings"
+	"time"
 
 	"github.com/BUIHUUHAIDANG/freelance_market/internal/model"
 	"github.com/gin-gonic/gin"
@@ -289,4 +290,92 @@ func writeProfileQueryError(ctx *gin.Context, err error, notFoundMessage string)
 		return
 	}
 	ctx.JSON(http.StatusInternalServerError, model.Fail{Error: err.Error()})
+}
+
+func RegisterAsFreelancer(db *sql.DB) gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+		currentUserID,ok := currentUserID(ctx)
+		if !ok {
+			return 
+		}
+		var freelancerRegister model.FreelancerRegisterInput
+		if err := ctx.BindJSON(&freelancerRegister); err != nil {
+			ctx.JSON(400, model.Fail{
+				Error: err.Error(),
+			})
+			return
+		}
+		//check is user register freelancer before
+		var exist bool
+		query := `SELECT EXISTS(SELECT 1 FROM freelancer WHERE user_account_id = ?)`
+		err := db.QueryRow(query,currentUserID).Scan(&exist)
+		if err != nil {
+			if err != sql.ErrNoRows {
+				ctx.JSON(http.StatusNotFound,model.Fail{
+					Error: "You already has freelancer profile",
+				})
+				return 
+			}
+			ctx.JSON(http.StatusInternalServerError,model.Fail{
+				Error: err.Error(),
+			})
+		}
+		register_date := time.Now().Format("2006-01-02")
+		insertQuery := `INSERT INTO freelancer (registration_date,user_account_id,location,overview) VALUES (?,?,?,?)`
+		_,err = db.Exec(insertQuery,register_date,currentUserID,freelancerRegister.Location,freelancerRegister.Overview)
+		if err != nil {
+			ctx.JSON(500,model.Fail{
+				Error: err.Error(),
+			})
+			return 
+		}
+		ctx.JSON(201,gin.H{
+			"status":"success",
+			"message":"register as freelancer success",
+		})
+	}
+}
+
+func RegisterAsHirer(db *sql.DB) gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+		currentUserID,ok := currentUserID(ctx)
+		if !ok {
+			return 
+		}
+		var hirerRegister model.HirerRegisterInput
+		if err := ctx.BindJSON(&hirerRegister); err != nil {
+			ctx.JSON(400, model.Fail{
+				Error: err.Error(),
+			})
+			return
+		}
+		//check is user register freelancer before
+		var exist bool
+		query := `SELECT EXISTS(SELECT 1 FROM hire_manager WHERE user_account_id = ?)`
+		err := db.QueryRow(query,currentUserID).Scan(&exist)
+		if err != nil {
+			if err != sql.ErrNoRows {
+				ctx.JSON(http.StatusNotFound,model.Fail{
+					Error: "You already has hirer profile",
+				})
+				return 
+			}
+			ctx.JSON(http.StatusInternalServerError,model.Fail{
+				Error: err.Error(),
+			})
+		}
+		register_date := time.Now().Format("2006-01-02")
+		insertQuery := `INSERT INTO hire_manager (user_account_id,registration_date,location,company_id) VALUES (?,?,?,?)`
+		_,err = db.Exec(insertQuery,currentUserID,register_date,hirerRegister.Location,hirerRegister.CompanyID)
+		if err != nil {
+			ctx.JSON(500,model.Fail{
+				Error: err.Error(),
+			})
+			return 
+		}
+		ctx.JSON(201,gin.H{
+			"status":"success",
+			"message":"register as hirer success",
+		})
+	}
 }

@@ -53,7 +53,7 @@ CREATE TABLE `company` (
   `id` bigint NOT NULL AUTO_INCREMENT,
   `company_location` varchar(255) DEFAULT NULL,
   `company_name` varchar(255) NOT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
   UNIQUE KEY `uq_company_name` (`company_name`)
 );
 

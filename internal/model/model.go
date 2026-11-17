@@ -70,6 +70,15 @@ type HirerProfileRespond struct {
 	CompanyName      string  `json:"company_name"`
 	CompanyLocation  *string `json:"company_location"`
 }
+//register as freelancer or hirer
+type FreelancerRegisterInput struct {
+	Location *string `json:"location"`
+	Overview *string `json:"overview"`
+}
+type HirerRegisterInput struct {
+	Location *string `json:"location"`
+	CompanyID int64 `json:"company_id" binding:"required"`
+}
 
 // job
 type Job struct {
